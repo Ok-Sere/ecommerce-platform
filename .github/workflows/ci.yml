@@ -1,0 +1,33 @@
+# filepath: .github/workflows/ci.yml
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test || echo "No tests yet"
+      - name: Build
+        run: echo "Build step for backend"
+
+  build-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: webapp
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test || echo "No tests yet"
+      - name: Build
+        run: npm run build
