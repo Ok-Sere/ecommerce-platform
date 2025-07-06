@@ -1,22 +1,36 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Replace the URL below with your actual Render backend API URL
+    fetch('https://ecommerce-platform-ypjf.onrender.com/products')
+      .then(res => res.json())
+      .then(data => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Product List</h1>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <ul>
+            {products.map(product => (
+              <li key={product.id}>
+                {product.name} - ${product.price}
+              </li>
+            ))}
+          </ul>
+        )}
       </header>
     </div>
   );
